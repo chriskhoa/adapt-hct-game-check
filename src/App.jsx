@@ -165,10 +165,10 @@ function App() {
             value={quote}
             onChange={(e) => setQuote(e.target.value)}
             autoSize={{ minRows: 3, maxRows: 8 }}
-            style={{ marginBottom: 16, fontSize: '17px' }}
+            style={{ marginBottom: 16, fontSize: '20px' }}
           />
 
-          <div style={{ textAlign: 'center', margin: '16px 0', fontSize: '18px' }}>Or</div>
+          <div style={{ textAlign: 'center', margin: '16px 0', fontSize: '21px' }}>Or</div>
 
           <div style={{ textAlign: 'center' }}>
             <Upload
@@ -189,7 +189,7 @@ function App() {
                 key={size.id}
                 closable
                 onClose={() => handleRemoveSize(size.id)}
-                style={{ fontSize: '17px', padding: '6px 12px' }}
+                style={{ fontSize: '20px', padding: '6px 12px' }}
               >
                 {size.width}x{size.height}
               </Tag>
@@ -209,7 +209,7 @@ function App() {
                   size="large"
                   style={{ width: '130px' }}
                 />
-                <span style={{ fontSize: '20px' }}>x</span>
+                <span style={{ fontSize: '23px' }}>x</span>
                 <InputNumber
                   min={1}
                   max={50}
@@ -235,7 +235,7 @@ function App() {
                   message="Max number of tags is 3. To add more tag, delete existing tag(s)."
                   type="info"
                   showIcon
-                  style={{ marginTop: 8, fontSize: '17px' }}
+                  style={{ marginTop: 8, fontSize: '20px' }}
                 />
               )}
             </Space>
@@ -257,7 +257,7 @@ function App() {
           <Title level={4}>Output:</Title>
           <div className="output-space">
             {!checkResults ? (
-              <p style={{ color: '#999', fontStyle: 'italic', fontSize: '17px' }}>
+              <p style={{ color: '#999', fontStyle: 'italic', fontSize: '20px' }}>
                 Results will appear here after checking...
               </p>
             ) : (
@@ -272,7 +272,7 @@ function App() {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'nowrap' }}>
                           <span style={{
                             flex: '0 1 70%',
-                            fontSize: '17px',
+                            fontSize: '20px',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap'
@@ -285,7 +285,7 @@ function App() {
                                 key={idx}
                                 icon={r.success ? <CheckCircleOutlined /> : <CloseCircleOutlined />}
                                 color={r.success ? 'success' : 'error'}
-                                style={{ fontSize: '17px', padding: '5px 12px' }}
+                                style={{ fontSize: '20px', padding: '5px 12px' }}
                               >
                                 {r.puzzleSize}
                               </Tag>
@@ -310,7 +310,7 @@ function App() {
                           ))}
                         </div>
                       ) : (
-                        <p style={{ color: '#999', fontStyle: 'italic', margin: 0, fontSize: '17px' }}>
+                        <p style={{ color: '#999', fontStyle: 'italic', margin: 0, fontSize: '20px' }}>
                           This quote does not fit in any of the selected puzzle sizes.
                         </p>
                       )}
