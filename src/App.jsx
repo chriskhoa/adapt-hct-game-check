@@ -165,17 +165,17 @@ function App() {
             value={quote}
             onChange={(e) => setQuote(e.target.value)}
             autoSize={{ minRows: 3, maxRows: 8 }}
-            style={{ marginBottom: 16 }}
+            style={{ marginBottom: 16, fontSize: '15px' }}
           />
 
-          <div style={{ textAlign: 'center', margin: '16px 0' }}>Or</div>
+          <div style={{ textAlign: 'center', margin: '16px 0', fontSize: '16px' }}>Or</div>
 
           <Upload
             beforeUpload={handleFileUpload}
             maxCount={1}
             accept=".txt"
           >
-            <Button icon={<UploadOutlined />}>Upload File</Button>
+            <Button icon={<UploadOutlined />} size="large">Upload File</Button>
           </Upload>
         </div>
 
@@ -187,7 +187,7 @@ function App() {
                 key={size.id}
                 closable
                 onClose={() => handleRemoveSize(size.id)}
-                style={{ fontSize: '14px', padding: '4px 8px' }}
+                style={{ fontSize: '16px', padding: '6px 12px' }}
               >
                 {size.width}x{size.height}
               </Tag>
@@ -204,8 +204,10 @@ function App() {
                   onChange={setNewWidth}
                   placeholder="Width"
                   disabled={puzzleSizes.length >= MAX_PUZZLE_SIZES}
+                  size="large"
+                  style={{ width: '100px' }}
                 />
-                <span>x</span>
+                <span style={{ fontSize: '18px' }}>x</span>
                 <InputNumber
                   min={1}
                   max={50}
@@ -213,12 +215,15 @@ function App() {
                   onChange={setNewHeight}
                   placeholder="Height"
                   disabled={puzzleSizes.length >= MAX_PUZZLE_SIZES}
+                  size="large"
+                  style={{ width: '100px' }}
                 />
                 <Button
                   type="dashed"
                   icon={<PlusOutlined />}
                   onClick={handleAddSize}
                   disabled={puzzleSizes.length >= MAX_PUZZLE_SIZES}
+                  size="large"
                 >
                   Add Puzzle Size
                 </Button>
@@ -228,7 +233,7 @@ function App() {
                   message="Max number of tags is 3. To add more tag, delete existing tag(s)."
                   type="info"
                   showIcon
-                  style={{ marginTop: 8 }}
+                  style={{ marginTop: 8, fontSize: '15px' }}
                 />
               )}
             </Space>
@@ -250,7 +255,7 @@ function App() {
           <Title level={4}>Output:</Title>
           <div className="output-space">
             {!checkResults ? (
-              <p style={{ color: '#999', fontStyle: 'italic' }}>
+              <p style={{ color: '#999', fontStyle: 'italic', fontSize: '15px' }}>
                 Results will appear here after checking...
               </p>
             ) : (
@@ -263,7 +268,7 @@ function App() {
                       key={result.id}
                       header={
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                          <span style={{ flex: '1 1 auto', minWidth: '200px' }}>
+                          <span style={{ flex: '1 1 auto', minWidth: '200px', fontSize: '15px' }}>
                             {result.quote.length > 60 ? result.quote.substring(0, 60) + '...' : result.quote}
                           </span>
                           <Space wrap>
@@ -272,6 +277,7 @@ function App() {
                                 key={idx}
                                 icon={r.success ? <CheckCircleOutlined /> : <CloseCircleOutlined />}
                                 color={r.success ? 'success' : 'error'}
+                                style={{ fontSize: '15px', padding: '4px 10px' }}
                               >
                                 {r.puzzleSize}
                               </Tag>
@@ -296,7 +302,7 @@ function App() {
                           ))}
                         </div>
                       ) : (
-                        <p style={{ color: '#999', fontStyle: 'italic', margin: 0 }}>
+                        <p style={{ color: '#999', fontStyle: 'italic', margin: 0, fontSize: '15px' }}>
                           This quote does not fit in any of the selected puzzle sizes.
                         </p>
                       )}
