@@ -269,11 +269,17 @@ function App() {
                     <Collapse.Panel
                       key={result.id}
                       header={
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                          <span style={{ flex: '1 1 auto', minWidth: '200px', fontSize: '15px' }}>
-                            {result.quote.length > 60 ? result.quote.substring(0, 60) + '...' : result.quote}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'nowrap' }}>
+                          <span style={{
+                            flex: '0 1 70%',
+                            fontSize: '15px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                          }}>
+                            {result.quote}
                           </span>
-                          <Space wrap>
+                          <Space wrap style={{ flex: '0 1 30%', justifyContent: 'flex-end' }}>
                             {result.results.map((r, idx) => (
                               <Tag
                                 key={idx}
