@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { Input, Upload, Tag, Button, Space, InputNumber, Typography } from 'antd'
+import { Input, Upload, Tag, Button, Space, InputNumber, Typography, Alert } from 'antd'
 import { UploadOutlined, PlusOutlined } from '@ant-design/icons'
 import './App.css'
 
 const { Title } = Typography
+const MAX_PUZZLE_SIZES = 3
 
 function App() {
   const [quote, setQuote] = useState('')
@@ -20,7 +21,7 @@ function App() {
   }
 
   const handleAddSize = () => {
-    if (newWidth > 0 && newHeight > 0) {
+    if (newWidth > 0 && newHeight > 0 && puzzleSizes.length < MAX_PUZZLE_SIZES) {
       setPuzzleSizes([...puzzleSizes, {
         id: nextId,
         width: newWidth,
@@ -87,29 +88,42 @@ function App() {
           </Space>
 
           <div style={{ marginTop: 16 }}>
-            <Space>
-              <InputNumber
-                min={1}
-                max={50}
-                value={newWidth}
-                onChange={setNewWidth}
-                placeholder="Width"
-              />
-              <span>x</span>
-              <InputNumber
-                min={1}
-                max={50}
-                value={newHeight}
-                onChange={setNewHeight}
-                placeholder="Height"
-              />
-              <Button
-                type="dashed"
-                icon={<PlusOutlined />}
-                onClick={handleAddSize}
-              >
-                Add Puzzle Size
-              </Button>
+            <Space direction="vertical" style={{ width: '100%' }}>
+              <Space>
+                <InputNumber
+                  min={1}
+                  max={50}
+                  value={newWidth}
+                  onChange={setNewWidth}
+                  placeholder="Width"
+                  disabled={puzzleSizes.length >= MAX_PUZZLE_SIZES}
+                />
+                <span>x</span>
+                <InputNumber
+                  min={1}
+                  max={50}
+                  value={newHeight}
+                  onChange={setNewHeight}
+                  placeholder="Height"
+                  disabled={puzzleSizes.length >= MAX_PUZZLE_SIZES}
+                />
+                <Button
+                  type="dashed"
+                  icon={<PlusOutlined />}
+                  onClick={handleAddSize}
+                  disabled={puzzleSizes.length >= MAX_PUZZLE_SIZES}
+                >
+                  Add Puzzle Size
+                </Button>
+              </Space>
+              {puzzleSizes.length >= MAX_PUZZLE_SIZES && (
+                <Alert
+                  message="Max number of tags is 3. To add more tag, delete existing tag(s)."
+                  type="info"
+                  showIcon
+                  style={{ marginTop: 8 }}
+                />
+              )}
             </Space>
           </div>
         </div>
