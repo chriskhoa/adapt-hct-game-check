@@ -5,7 +5,7 @@
 }
 
 html {
-  font-size: 16px;
+  font-size: 18px !important;
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -19,7 +19,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-font-size: 14px;
+  font-size: 16px !important;
 }
 
 #root {
@@ -31,18 +31,28 @@ button,
 input,
 select,
 textarea {
-  font-size: inherit;
-  min-font-size: 14px;
+  font-size: 16px !important;
 }
 
 .ant-btn {
-  min-height: 40px;
+  min-height: 44px !important;
+  font-size: 16px !important;
 }
 
 .ant-input-number {
-  min-height: 40px;
+  min-height: 44px !important;
+  font-size: 16px !important;
 }
 
 .ant-tag {
-  min-height: 24px;
+  min-height: 28px !important;
+  font-size: 16px !important;
+}
+
+/* Global minimum font size */
+* {
+  -webkit-text-size-adjust: none !important;
+  -moz-text-size-adjust: none !important;
+  -ms-text-size-adjust: none !important;
+  text-size-adjust: none !important;
 }
