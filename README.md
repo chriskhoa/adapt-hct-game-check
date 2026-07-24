@@ -44,7 +44,7 @@ npm run deploy
 3. Go to your repository settings on GitHub
 4. Navigate to Settings > Pages
 5. Under "Source", select "gh-pages" branch
-6. Your app will be available at: `https://[your-username].github.io/AdaptHCT-game-check/`
+6. Your app will be available at: `https://[your-username].github.io/adapt-hct-game-check/`
 
 ## Usage
 
