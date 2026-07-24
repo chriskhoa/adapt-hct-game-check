@@ -89,8 +89,8 @@ function App() {
     { id: 1, width: 8, height: 8 },
     { id: 2, width: 10, height: 10 }
   ])
-  const [newWidth, setNewWidth] = useState(12)
-  const [newHeight, setNewHeight] = useState(12)
+  const [newWidth, setNewWidth] = useState(null)
+  const [newHeight, setNewHeight] = useState(null)
   const [nextId, setNextId] = useState(3)
   const [checkResults, setCheckResults] = useState(null)
 
@@ -159,7 +159,7 @@ function App() {
         <Title level={2}>Word Game Puzzle Size Checker</Title>
 
         <div className="section">
-          <Title level={4}>Enter quote/list of quotes:</Title>
+          <Title level={4}>Enter quote/list of quotes (note: one quote per line):</Title>
           <Input.TextArea
             placeholder="Enter your quote here..."
             value={quote}
@@ -170,13 +170,15 @@ function App() {
 
           <div style={{ textAlign: 'center', margin: '16px 0', fontSize: '16px' }}>Or</div>
 
-          <Upload
-            beforeUpload={handleFileUpload}
-            maxCount={1}
-            accept=".txt"
-          >
-            <Button icon={<UploadOutlined />} size="large">Upload File</Button>
-          </Upload>
+          <div style={{ textAlign: 'center' }}>
+            <Upload
+              beforeUpload={handleFileUpload}
+              maxCount={1}
+              accept=".txt"
+            >
+              <Button icon={<UploadOutlined />} size="large">Upload File</Button>
+            </Upload>
+          </div>
         </div>
 
         <div className="section">
@@ -202,10 +204,10 @@ function App() {
                   max={50}
                   value={newWidth}
                   onChange={setNewWidth}
-                  placeholder="Width"
+                  placeholder="#characters"
                   disabled={puzzleSizes.length >= MAX_PUZZLE_SIZES}
                   size="large"
-                  style={{ width: '100px' }}
+                  style={{ width: '130px' }}
                 />
                 <span style={{ fontSize: '18px' }}>x</span>
                 <InputNumber
@@ -213,10 +215,10 @@ function App() {
                   max={50}
                   value={newHeight}
                   onChange={setNewHeight}
-                  placeholder="Height"
+                  placeholder="#lines"
                   disabled={puzzleSizes.length >= MAX_PUZZLE_SIZES}
                   size="large"
-                  style={{ width: '100px' }}
+                  style={{ width: '130px' }}
                 />
                 <Button
                   type="dashed"
@@ -240,7 +242,7 @@ function App() {
           </div>
         </div>
 
-        <div className="section">
+        <div className="section" style={{ textAlign: 'center' }}>
           <Button
             type="primary"
             size="large"
