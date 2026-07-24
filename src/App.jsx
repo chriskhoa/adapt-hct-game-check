@@ -1,10 +1,87 @@
 import { useState } from 'react'
-import { Input, Upload, Tag, Button, Space, InputNumber, Typography, Alert } from 'antd'
-import { UploadOutlined, PlusOutlined } from '@ant-design/icons'
+import { Input, Upload, Tag, Button, Space, InputNumber, Typography, Alert, Collapse } from 'antd'
+import { UploadOutlined, PlusOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons'
 import './App.css'
 
 const { Title } = Typography
 const MAX_PUZZLE_SIZES = 3
+
+// Helper function to get character width
+const getCharacterWidth = (char) => {
+  // Alphabet (a-z, A-Z) and numbers (0-9) = 1
+  if (/[a-zA-Z0-9]/.test(char)) {
+    return 1
+  }
+  // Spaces and all punctuation = 0.5
+  return 0.5
+}
+
+// Helper function to calculate word width
+const calculateWordWidth = (word) => {
+  return word.split('').reduce((sum, char) => sum + getCharacterWidth(char), 0)
+}
+
+// Helper function to fit quote into lines
+const fitQuoteIntoLines = (quote, maxCharsPerLine, maxLines) => {
+  const words = quote.trim().split(/\s+/)
+  const lines = []
+  let currentLine = ''
+  let currentLineWidth = 0
+
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i]
+    const wordWidth = calculateWordWidth(word)
+
+    // Check if word is too long to fit on any line
+    if (wordWidth > maxCharsPerLine) {
+      return { success: false, lines: [] }
+    }
+
+    // Calculate width if we add this word to current line
+    const spaceWidth = currentLine ? 0.5 : 0 // No space before first word
+    const totalWidth = currentLineWidth + spaceWidth + wordWidth
+
+    if (totalWidth <= maxCharsPerLine) {
+      // Word fits on current line
+      if (currentLine) {
+        currentLine += ' ' + word
+        currentLineWidth += spaceWidth + wordWidth
+      } else {
+        currentLine = word
+        currentLineWidth = wordWidth
+      }
+    } else {
+      // Word doesn't fit, start new line
+      if (currentLine) {
+        lines.push(currentLine)
+      }
+
+      // Check if we've exceeded max lines
+      if (lines.length >= maxLines) {
+        return { success: false, lines: [] }
+      }
+
+      currentLine = word
+      currentLineWidth = wordWidth
+    }
+  }
+
+  // Add the last line
+  if (currentLine) {
+    lines.push(currentLine)
+  }
+
+  // Check if total lines exceed max
+  if (lines.length > maxLines) {
+    return { success: false, lines: [] }
+  }
+
+  // Return lines in uppercase
+  return {
+    success: true,
+    lines: lines.map(line => line.toUpperCase())
+  }
+}
 
 function App() {
   const [quote, setQuote] = useState('')
@@ -15,6 +92,7 @@ function App() {
   const [newWidth, setNewWidth] = useState(12)
   const [newHeight, setNewHeight] = useState(12)
   const [nextId, setNextId] = useState(3)
+  const [checkResults, setCheckResults] = useState(null)
 
   const handleRemoveSize = (id) => {
     setPuzzleSizes(puzzleSizes.filter(size => size.id !== id))
@@ -41,9 +119,38 @@ function App() {
   }
 
   const handleCheck = () => {
-    // Placeholder for check logic - will be implemented later
-    console.log('Checking quote:', quote)
-    console.log('Puzzle sizes:', puzzleSizes)
+    // Parse quotes from input (split by newlines, filter empty)
+    const quotes = quote.split('\n').filter(q => q.trim() !== '')
+
+    // Process each quote against all puzzle sizes
+    const results = quotes.map((quoteText, index) => {
+      const quoteResult = {
+        id: index,
+        quote: quoteText.trim(),
+        results: []
+      }
+
+      // Check against each puzzle size
+      puzzleSizes.forEach(size => {
+        const result = fitQuoteIntoLines(
+          quoteText.trim(),
+          size.width,
+          size.height
+        )
+
+        quoteResult.results.push({
+          puzzleSize: `${size.width}x${size.height}`,
+          width: size.width,
+          height: size.height,
+          success: result.success,
+          lines: result.lines
+        })
+      })
+
+      return quoteResult
+    })
+
+    setCheckResults(results)
   }
 
   return (
@@ -142,10 +249,62 @@ function App() {
         <div className="section output-section">
           <Title level={4}>Output:</Title>
           <div className="output-space">
-            {/* Output will be displayed here */}
-            <p style={{ color: '#999', fontStyle: 'italic' }}>
-              Results will appear here after checking...
-            </p>
+            {!checkResults ? (
+              <p style={{ color: '#999', fontStyle: 'italic' }}>
+                Results will appear here after checking...
+              </p>
+            ) : (
+              <Collapse>
+                {checkResults.map((result) => {
+                  const hasSuccess = result.results.some(r => r.success)
+
+                  return (
+                    <Collapse.Panel
+                      key={result.id}
+                      header={
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                          <span style={{ flex: '1 1 auto', minWidth: '200px' }}>
+                            {result.quote.length > 60 ? result.quote.substring(0, 60) + '...' : result.quote}
+                          </span>
+                          <Space wrap>
+                            {result.results.map((r, idx) => (
+                              <Tag
+                                key={idx}
+                                icon={r.success ? <CheckCircleOutlined /> : <CloseCircleOutlined />}
+                                color={r.success ? 'success' : 'error'}
+                              >
+                                {r.puzzleSize}
+                              </Tag>
+                            ))}
+                          </Space>
+                        </div>
+                      }
+                    >
+                      {hasSuccess ? (
+                        <div className="puzzle-results">
+                          {result.results.filter(r => r.success).map((r, idx) => (
+                            <div key={idx} className="puzzle-box">
+                              <div className="puzzle-header">{r.puzzleSize}</div>
+                              <div className="puzzle-lines">
+                                {r.lines.map((line, lineIdx) => (
+                                  <div key={lineIdx} className="puzzle-line-content">
+                                    {line}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p style={{ color: '#999', fontStyle: 'italic', margin: 0 }}>
+                          This quote does not fit in any of the selected puzzle sizes.
+                        </p>
+                      )}
+                    </Collapse.Panel>
+                  )
+                })}
+              </Collapse>
+            )}
           </div>
         </div>
       </div>

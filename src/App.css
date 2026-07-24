@@ -29,6 +29,56 @@
   border-radius: 6px;
 }
 
+/* Puzzle results styles */
+.puzzle-results {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.puzzle-box {
+  flex: 1;
+  min-width: 200px;
+  max-width: calc(33.333% - 11px);
+  border: 2px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+}
+
+.puzzle-header {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1890ff;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #1890ff;
+}
+
+.puzzle-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.puzzle-line {
+  font-size: 11px;
+  font-weight: 600;
+  color: #8c8c8c;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.puzzle-line-content {
+  font-size: 14px;
+  font-weight: 500;
+  color: #262626;
+  font-family: 'Courier New', monospace;
+  padding: 4px 0;
+  word-break: break-word;
+}
+
 @media (max-width: 768px) {
   .content {
     padding: 24px;
@@ -36,5 +86,13 @@
 
   .app-container {
     padding: 20px 10px;
+  }
+
+  .puzzle-results {
+    flex-direction: column;
+  }
+
+  .puzzle-box {
+    min-width: 100%;
   }
 }
